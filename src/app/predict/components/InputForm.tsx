@@ -84,15 +84,19 @@ const steps = [
     title: "Age",
     type: "options",
     options: [
-      { title: "40-44", value: 0 },
-      { title: "45-49", value: 1 },
-      { title: "50-54", value: 2 },
-      { title: "55-59", value: 3 },
-      { title: "60-64", value: 4 },
-      { title: "65-69", value: 5 },
-      { title: "70-74", value: 6 },
-      { title: "75-79", value: 7 },
-      { title: "80+", value: 8 },
+      { title: "18-24", value: 0 },
+      { title: "25-29", value: 1 },
+      { title: "30-34", value: 2 },
+      { title: "35-39", value: 3 },
+      { title: "40-44", value: 4 },
+      { title: "45-49", value: 5 },
+      { title: "50-54", value: 6 },
+      { title: "55-59", value: 7 },
+      { title: "60-64", value: 8 },
+      { title: "65-69", value: 9 },
+      { title: "70-74", value: 10 },
+      { title: "75-79", value: 11 },
+      { title: "80+", value: 12 },
     ],
   },
   {
@@ -149,12 +153,7 @@ const InputForm = () => {
   const currentStepData = steps[currentStep];
   const [isInputComplete, setIsInputComplete] = useState(false);
   const handleNext = () => {
-    // check if we have input for the current step
-    if (formData[currentStepData.key] || formData[currentStepData.key] >= 0) {
-      setCurrentStep((prev) => prev + 1);
-      return;
-    }
-    alert("Please select an option");
+    setCurrentStep((prev) => prev + 1);
   };
   const handleBack = () => {
     if (currentStep === 0) {
@@ -162,13 +161,14 @@ const InputForm = () => {
     }
     setCurrentStep((prev) => prev - 1);
   };
-  const handleInputChange = (key, value) => {
+  const handleInputChange = async (key, value) => {
     setFormData((prev) => ({
       ...prev,
       [key]: value,
     }));
+    handleNext();
   };
-  const handleNumberInputChange = (key, value) => {
+  const handleNumberInputChange = async (key, value) => {
     setFormData((prev) => ({
       ...prev,
       [key]: Number(value),
@@ -176,14 +176,20 @@ const InputForm = () => {
   };
   const [isPredictionLoading, setIsPredictionLoading] = useState(false);
   const [prediction, setPrediction] = useState<{
-    prediction: number;
-  }>(1);
+    prediction: string;
+  }>("0");
   const handlePredict = () => {
     // check if we have input for the current step
     if (formData[currentStepData.key] || formData[currentStepData.key] >= 0) {
       // send the data to the server
       setIsPredictionLoading(true);
-      fetch("/predict", { method: "POST", body: JSON.stringify(formData) })
+      fetch("https://4f3c-103-195-140-96.ngrok-free.app/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
         .then((res) => res.json())
         .then((data) => {
           setPrediction(data.prediction);
@@ -191,7 +197,7 @@ const InputForm = () => {
         .finally(() => {
           setIsPredictionLoading(false);
         });
-      setIsInputComplete(true);
+
       return;
     }
     alert("Please fill the input");
@@ -201,91 +207,92 @@ const InputForm = () => {
       <h1 className="text-2xl font-bold text-center">
         Cardiovascular Disease Prediction
       </h1>
-      {isInputComplete ? (
-        <>
-          <img
-            src="/images/doctor.png"
-            width={200}
-            alt="loading"
-            className="mx-auto"
-          />
-          {isPredictionLoading ? (
-            <div className="text-center">Loading...</div>
-          ) : (
-            <div className="text-center">
-              <h2 className="text-xl font-bold">Prediction</h2>
-              <p className="text-2xl font-bold">
-                {prediction.prediction === 1 ? "High Risk" : "Low Risk"}
-              </p>
-            </div>
+
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            {currentStepData.title}
+          </label>
+          {currentStepData.type === "options" && (
+            <motion.div className="flex flex-wrap">
+              {currentStepData.options.map((option) => (
+                <motion.button
+                  layoutId={option.title}
+                  layout
+                  onClick={() => {
+                    handleInputChange(currentStepData.key, option.value);
+                  }}
+                  className={`border backdrop-blur-md backdrop-brightness-150  text-black font-bold py-2 px-4 w-40 h-10 rounded m-2 ${
+                    formData[currentStepData.key] === option.value
+                      ? "bg-gray-300/60 animate-pulse"
+                      : ""
+                  }`}
+                >
+                  {option.title}
+                </motion.button>
+              ))}
+            </motion.div>
           )}
-        </>
-      ) : (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              {currentStepData.title}
-            </label>
-            {currentStepData.type === "options" && (
-              <motion.div className="flex flex-wrap">
-                {currentStepData.options.map((option) => (
-                  <motion.button
-                    layoutId={option.title}
-                    layout
-                    onClick={() =>
-                      handleInputChange(currentStepData.key, option.value)
-                    }
-                    className={`border backdrop-blur-md backdrop-brightness-150  text-black font-bold py-2 px-4 w-40 h-10 rounded m-2 ${
-                      formData[currentStepData.key] === option.value
-                        ? "bg-gray-300/60 animate-pulse"
-                        : ""
-                    }`}
-                  >
-                    {option.title}
-                  </motion.button>
-                ))}
-              </motion.div>
-            )}
-            {currentStepData.type === "number" && (
-              <input
-                type="number"
-                key={currentStepData.key}
-                required
-                min={0}
-                onChange={(e) =>
-                  handleNumberInputChange(currentStepData.key, e.target.value)
-                }
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            )}
-          </div>
-          <div className="flex justify-between">
-            <button
-              onClick={handleBack}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Back
-            </button>
-            {currentStep < steps.length - 1 ? (
-              <button
-                onClick={handleNext}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Next
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  handlePredict();
-                }}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Predict
-              </button>
-            )}
-          </div>
+          {currentStepData.type === "number" && (
+            <input
+              type="number"
+              key={currentStepData.key}
+              required
+              defaultValue={formData[currentStepData.key] || 0}
+              min={0}
+              onChange={(e) => {
+                handleNumberInputChange(currentStepData.key, e.target.value);
+              }}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          )}
         </div>
-      )}
+        <div>
+          <>
+            <img
+              src="/images/doctor.png"
+              width={200}
+              alt="loading"
+              className="mx-auto"
+            />
+            {isPredictionLoading ? (
+              <div className="text-center">Loading...</div>
+            ) : (
+              <div className="text-center">
+                <h2 className="text-xl font-bold">Prediction</h2>
+                <p className="text-2xl font-bold">
+                  {prediction.prediction === "1" ? "High Risk" : "Low Risk"}
+                </p>
+              </div>
+            )}
+          </>
+        </div>
+        <div className="flex justify-between">
+          <button
+            onClick={handleBack}
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Back
+          </button>
+          {currentStep < steps.length - 1 ? (
+            <button
+              onClick={handleNext}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Next
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                handlePredict();
+              }}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Predict
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
