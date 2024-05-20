@@ -2,6 +2,7 @@ from flask import Flask, request
 import flask_cors
 import pickle
 import numpy as np
+import time
 
 app = Flask(__name__)
 flask_cors.CORS(app)
@@ -66,6 +67,7 @@ def predict():
     ]
     model_input = np.array([values])
     prediction = model.predict(model_input)
+    time.sleep(5)
     return {"prediction": str(prediction[0])}
 
 
