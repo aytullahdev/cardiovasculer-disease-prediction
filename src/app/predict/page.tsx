@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
+import InputForm from "./components/InputForm";
 
 const page = () => {
-  return <div>Prediction Model</div>;
+  return <InputForm />;
 };
 
 export default page;
