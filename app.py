@@ -65,8 +65,10 @@ def predict():
         data["Diet_Score"],
         data["Bad_Habbit_Score"],
     ]
+    print(values)
     model_input = np.array([values])
     prediction = model.predict(model_input)
+    print(data)
     time.sleep(5)
     return {"prediction": str(prediction[0])}
 
