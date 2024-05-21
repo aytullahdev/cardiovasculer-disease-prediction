@@ -151,8 +151,9 @@ const InputForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
   const currentStepData = steps[currentStep];
-  const [isInputComplete, setIsInputComplete] = useState(false);
+  const [isPredictionComplited, setIsPredictionComplited] = useState(false);
   const handleNext = () => {
+    setIsPredictionComplited(false);
     setCurrentStep((prev) => prev + 1);
   };
   const handleBack = () => {
@@ -175,15 +176,14 @@ const InputForm = () => {
     }));
   };
   const [isPredictionLoading, setIsPredictionLoading] = useState(false);
-  const [prediction, setPrediction] = useState<{
-    prediction: string;
-  }>("0");
+  const [prediction, setPrediction] = useState<string>("0");
   const handlePredict = () => {
+    setIsPredictionComplited(false);
     // check if we have input for the current step
     if (formData[currentStepData.key] || formData[currentStepData.key] >= 0) {
       // send the data to the server
       setIsPredictionLoading(true);
-      fetch("https://4f3c-103-195-140-96.ngrok-free.app/predict", {
+      fetch("http://127.0.0.1:5000/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -193,6 +193,7 @@ const InputForm = () => {
         .then((res) => res.json())
         .then((data) => {
           setPrediction(data.prediction);
+          setIsPredictionComplited(true);
         })
         .finally(() => {
           setIsPredictionLoading(false);
@@ -204,7 +205,7 @@ const InputForm = () => {
   };
   return (
     <div className="w-full max-w-xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center">
+      <h1 className="text-2xl font-bold text-center py-10">
         Cardiovascular Disease Prediction
       </h1>
 
@@ -258,12 +259,20 @@ const InputForm = () => {
             {isPredictionLoading ? (
               <div className="text-center">Loading...</div>
             ) : (
-              <div className="text-center">
-                <h2 className="text-xl font-bold">Prediction</h2>
-                <p className="text-2xl font-bold">
-                  {prediction.prediction === "1" ? "High Risk" : "Low Risk"}
-                </p>
-              </div>
+              <>
+                {isPredictionComplited && (
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold">Prediction</h2>
+                    <p
+                      className={`text-xl font-bold ${
+                        prediction === "1" ? "text-red-500" : "text-green-500"
+                      }`}
+                    >
+                      {prediction === "1" ? "High Risk" : "Low Risk"}
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </>
         </div>

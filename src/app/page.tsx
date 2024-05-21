@@ -3,8 +3,10 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex flex-col items-center justify-center">
+    <main className="flex min-h-screen flex-col items-center justify-start container mx-auto py-5">
+      {/* Navbar */}
+
+      <div className="flex flex-col items-center justify-center ">
         <h1 className="text-4xl font-bold text-center">
           Cardiovascular Disease Prediction
         </h1>
@@ -30,7 +32,7 @@ export default function Home() {
       >
         Get Started
       </Link>
-      <footer className="text-center text-gray-500">
+      <footer className="text-center text-gray-500 py-10">
         <p>
           Made with ❤️ by{" "}
           <Link
