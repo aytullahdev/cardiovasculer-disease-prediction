@@ -7,7 +7,7 @@ import time
 app = Flask(__name__)
 flask_cors.CORS(app)
 
-model = pickle.load(open("model.pkl", "rb"))
+model = pickle.load(open("xgb_model.pkl", "rb"))
 
 
 @app.route("/")
@@ -18,56 +18,40 @@ def index():
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json
-    # Calculate BMI from Height and Weight
-    data["BMI"] = data["Weight_kg"] / ((data["Height_cm"] / 100) ** 2)
-    data["BMI_Category"] = (
-        0
-        if data["BMI"] < 18.5
-        else 1 if data["BMI"] < 24.9 else 2 if data["BMI"] < 29.9 else 3
-    )
-    data["Lifestyle_Score"] = (
-        data["Exercise"]
-        - data["Smoking_History"]
-        + data["Fruit_Consumption"] / 10
-        + data["Green_Vegetables_Consumption"] / 10
-        - data["Fried_Potatoes_Consumption"] / 10
-    )
-    data["Diet_Score"] = (
-        data["Fruit_Consumption"] / 10
-        + data["Green_Vegetables_Consumption"] / 10
-        - data["Fried_Potatoes_Consumption"] / 10
-    )
-    data["Bad_Habbit_Score"] = (
-        data["Alcohol_Consumption"] / 10 + data["Smoking_History"]
-    )
-
-    # create a numpy array from the data
-    values = [
-        data["General_Health"],
-        data["Exercise"],
-        data["Skin_Cancer"],
-        data["Other_Cancer"],
-        data["Depression"],
-        data["Diabetics"],
-        data["Arthritis"],
-        data["Sex"],
-        data["Age"],
-        data["Height_cm"],
-        data["Weight_kg"],
-        data["BMI"],
-        data["Smoking_History"],
-        data["Alcohol_Consumption"],
-        data["Fruit_Consumption"],
-        data["Green_Vegetables_Consumption"],
-        data["Fried_Potatoes_Consumption"],
-        data["BMI_Category"],
-        data["Lifestyle_Score"],
-        data["Diet_Score"],
-        data["Bad_Habbit_Score"],
+    
+    # Extract values in the specific sequence
+    sequence = [
+        data.get("SEX"),
+        data.get("TOTCHOL"),
+        data.get("AGE"),
+        data.get("SYSBP"),
+        data.get("DIABP"),
+        data.get("CURSMOKE"),
+        data.get("CIGPDAY"),
+        data.get("BMI"),
+        data.get("DIABETES"),
+        data.get("BPMEDS"),
+        data.get("HEARTRTE"),
+        data.get("GLUCOSE"),
+        data.get("PREVCHD"),
+        data.get("PREVAP"),
+        data.get("PREVMI"),
+        data.get("PREVSTRK"),
+       
     ]
-    print(values)
-    model_input = np.array([values])
+    #  data.get("PREVHYP"),
+    #     data.get("ANGINA"),
+    #     data.get("HOSPMI"),
+    #     data.get("MI_FCHD"),
+    #     data.get("ANYCHD"),
+    #     data.get("STROKE"),
+    #     data.get("HYPERTEN"),
+    print(sequence)
+    # Convert to numpy array
+    model_input = np.array([sequence])
+    # Predict using the model
     prediction = model.predict(model_input)
+    
     print(data)
     time.sleep(5)
     return {"prediction": str(prediction[0])}

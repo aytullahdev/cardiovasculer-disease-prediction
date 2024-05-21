@@ -18,16 +18,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen container mx-auto py-5 ">
-        <nav className="flex justify-between w-full">
-          <div className="text-2xl font-bold">
-            <Link href="/">Cardiovascular Disease Prediction</Link>
-          </div>
-          <div className="flex space-x-4">
-            <Link href="/predict">Predict</Link>
-            <Link href="/predict">Login</Link>
-            <Link href="/about">About</Link>
-          </div>
-        </nav>
         <div>{children}</div>
       </body>
     </html>

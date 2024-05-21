@@ -3,75 +3,7 @@ import { motion } from "framer-motion";
 
 const steps = [
   {
-    key: "General_Health",
-    title: "General Health",
-    type: "options",
-    options: [
-      { title: "Poor", value: 0 },
-      { title: "Fair", value: 1 },
-      { title: "Good", value: 2 },
-      { title: "Very Good", value: 3 },
-      { title: "Excellent", value: 4 },
-    ],
-  },
-
-  {
-    key: "Exercise",
-    title: "Exercise",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-
-  {
-    key: "Skin_Cancer",
-    title: "Skin Cancer",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-  {
-    key: "Other_Cancer",
-    title: "Other Cancer",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-  {
-    key: "Depression",
-    title: "Depression",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-  {
-    key: "Diabetics",
-    title: "Diabetics",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-  {
-    key: "Arthritis",
-    title: "Arthritis",
-    type: "options",
-    options: [
-      { title: "No", value: 0 },
-      { title: "Yes", value: 1 },
-    ],
-  },
-  {
-    key: "Sex",
+    key: "SEX",
     title: "Sex",
     type: "options",
     options: [
@@ -79,41 +11,121 @@ const steps = [
       { title: "Female", value: 0 },
     ],
   },
+
   {
-    key: "Age",
+    key: "TOTCHOL",
+    title: "Total Cholesterol (mg/dL)",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "AGE",
     title: "Age",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "SYSBP",
+    title: "Systolic Blood Pressure (mmHg)",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "DIABP",
+    title: "Diastolic Blood Pressure (mmHg)",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "CURSMOKE",
+    title: "Current Smoker",
     type: "options",
     options: [
-      { title: "18-24", value: 0 },
-      { title: "25-29", value: 1 },
-      { title: "30-34", value: 2 },
-      { title: "35-39", value: 3 },
-      { title: "40-44", value: 4 },
-      { title: "45-49", value: 5 },
-      { title: "50-54", value: 6 },
-      { title: "55-59", value: 7 },
-      { title: "60-64", value: 8 },
-      { title: "65-69", value: 9 },
-      { title: "70-74", value: 10 },
-      { title: "75-79", value: 11 },
-      { title: "80+", value: 12 },
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
     ],
   },
   {
-    key: "Height_cm",
-    title: "Height (cm)",
+    key: "CIGPDAY",
+    title: "Cigarettes Per Day",
     type: "number",
     options: [],
   },
   {
-    key: "Weight_kg",
-    title: "Weight (kg)",
+    key: "BMI",
+    title: "Body Mass Index",
     type: "number",
     options: [],
   },
   {
-    key: "Smoking_History",
-    title: "Smoking History",
+    key: "DIABETES",
+    title: "Diabetes",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "BPMEDS",
+    title: "Blood Pressure Medication",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "HEARTRTE",
+    title: "Heart Rate (bpm)",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "GLUCOSE",
+    title: "Blood Glucose (mg/dL)",
+    type: "number",
+    options: [],
+  },
+  {
+    key: "PREVCHD",
+    title: "Previous Coronary Heart Disease",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "PREVAP",
+    title: "Previous Angina Pectoris",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "PREVMI",
+    title: "Previous Myocardial Infarction",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "PREVSTRK",
+    title: "Previous Stroke",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "PREVHYP",
+    title: "Previous Hypertension",
     type: "options",
     options: [
       { title: "No", value: 0 },
@@ -122,31 +134,61 @@ const steps = [
   },
 
   {
-    key: "Alcohol_Consumption",
-    title: "Alcohol Consumption",
-    type: "number",
-    options: [],
+    key: "ANGINA",
+    title: "Angina Pectoris",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
   },
   {
-    key: "Fruit_Consumption",
-    title: "Fruit Consumption",
-    type: "number",
-    options: [],
+    key: "HOSPMI",
+    title: "Hospitalized Myocardial Infarction",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
   },
   {
-    key: "Green_Vegetables_Consumption",
-    title: "Green Vegetables Consumption",
-    type: "number",
-    options: [],
+    key: "MI_FCHD",
+    title: "Myocardial Infarction or Fatal CHD",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
   },
-
   {
-    key: "Fried_Potatoes_Consumption",
-    title: "Fried Potatoes Consumption",
-    type: "number",
-    options: [],
+    key: "ANYCHD",
+    title: "Any Coronary Heart Disease",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "STROKE",
+    title: "Stroke",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
+  },
+  {
+    key: "HYPERTEN",
+    title: "Hypertension",
+    type: "options",
+    options: [
+      { title: "No", value: 0 },
+      { title: "Yes", value: 1 },
+    ],
   },
 ];
+
 const InputForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({});
@@ -154,6 +196,9 @@ const InputForm = () => {
   const [isPredictionComplited, setIsPredictionComplited] = useState(false);
   const handleNext = () => {
     setIsPredictionComplited(false);
+    if (currentStep === steps.length - 1) {
+      return;
+    }
     setCurrentStep((prev) => prev + 1);
   };
   const handleBack = () => {
@@ -250,19 +295,13 @@ const InputForm = () => {
         </div>
         <div>
           <>
-            <img
-              src="/images/doctor.png"
-              width={200}
-              alt="loading"
-              className="mx-auto"
-            />
             {isPredictionLoading ? (
               <div className="text-center">Loading...</div>
             ) : (
               <>
                 {isPredictionComplited && (
                   <div className="text-center">
-                    <h2 className="text-2xl font-bold">Prediction</h2>
+                    <h2 className="text-2xl font-bold">PREDICT</h2>
                     <p
                       className={`text-xl font-bold ${
                         prediction === "1" ? "text-red-500" : "text-green-500"
